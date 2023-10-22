@@ -19,23 +19,36 @@ public class UrlShortenerService {
         return urlShortenerRepo.findByShortUrl(shortUrl).getLongUrl();
 
     }
+    public String getOriginalUrl(String uniqueCode) {
+        return urlShortenerRepo.findByKey(uniqueCode).getLongUrl();
+
+    }
 
     public Url shortenUrl(String longUrl) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] md5Digest = md.digest(longUrl.getBytes());
-            String base64 = Base64.getEncoder().encodeToString(md5Digest);
-            String key = base64.substring(0, 6);
+        //look for https:
+        // Find the index of "http"
+        int startIndex = longUrl.indexOf("http");
 
-            Url url = new Url();
-            url.setLongUrl(longUrl);
-            url.setKey(key);
-            url.setShortUrl("localhost:8080/" + key);
-            urlShortenerRepo.save(url);
-            return url; // Use the first 6 characters as the short code
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null; // Handle the exception appropriately in your code
+        if (startIndex != -1) {
+            String substringStartingFromHttp = longUrl.substring(startIndex);
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] md5Digest = md.digest(longUrl.getBytes());
+                String base64 = Base64.getEncoder().encodeToString(md5Digest);
+                String key = base64.substring(0, 6);
+
+                Url url = new Url();
+                url.setLongUrl(longUrl);
+                url.setKey(key);
+                url.setShortUrl("localhost:8080/" + key);
+                urlShortenerRepo.save(url);
+                return url; // Use the first 6 characters as the short code
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return null; // Handle the exception appropriately in your code
+            }
         }
-    }
-}
+
+
+        return new Url();
+}}
