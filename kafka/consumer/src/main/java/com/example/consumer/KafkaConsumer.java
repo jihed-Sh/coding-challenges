@@ -1,4 +1,4 @@
-package com.example.producer.consumer;
+package com.example.consumer;
 
 import com.example.producer.payload.Student;
 import lombok.extern.slf4j.Slf4j;

@@ -12,10 +12,10 @@ import static java.lang.String.format;
 public class KafkaConsumer {
 
 
-    @KafkaListener(topics = "MyTopic", groupId = "myGroup")
-    public void consumeMessage(Student student) {
-        log.info(format("Reading message from my topic: %s",student.toString()));
-
-
-    }
+//    @KafkaListener(topics = "MyTopic", groupId = "myGroup")
+//    public void consumeMessage(Student student) {
+//        log.info(format("Reading message from my topic: %s",student.toString()));
+//
+//
+//    }
 }
